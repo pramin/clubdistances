@@ -1,0 +1,116 @@
+<html>
+<head>
+    <style>
+        .button {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr><td><button class="button" onClick="updateClubLocation(-1)">Start</button></td><td><button class="button" onClick="updateClubLocation(0)">Distance</button></td><td id="distance">0 yards</td></tr>
+        <tr><td><button class="button" onClick="updateClubLocation(1)">Driver</button></td><td id="LastDistance1"></td><td id="AverageDistance1"></td><td id="MaxDistance1"></td></tr>
+        <tr><td><button class="button" onClick="updateClubLocation(2)">3W</button></td><td id="LastDistance2"></td><td id="AverageDistance2"></td><td id="MaxDistance2"></td></tr>
+        <tr><td><button class="button" onClick="updateClubLocation(3)">5I</button></td><td id="LastDistance3"></td><td id="AverageDistance3"></td><td id="MaxDistance3"></td></tr>
+        <tr><td><button class="button" onClick="updateClubLocation(4)">6I</button></td><td id="LastDistance4"></td><td id="AverageDistance4"></td><td id="MaxDistance4"></td></tr>
+        <tr><td><button class="button" onClick="updateClubLocation(5)">7I</button></td><td id="LastDistance5"></td><td id="AverageDistance5"></td><td id="MaxDistance5"></td></tr>
+        <tr><td><button class="button" onClick="updateClubLocation(6)">8I</button></td><td id="LastDistance6"></td><td id="AverageDistance6"></td><td id="MaxDistance6"></td></tr>
+        <tr><td><button class="button" onClick="updateClubLocation(7)">9I</button></td><td id="LastDistance7"></td><td id="AverageDistance7"></td><td id="MaxDistance7"></td></tr>
+        <tr><td><button class="button" onClick="updateClubLocation(8)">PW</button></td><td id="LastDistance8"></td><td id="AverageDistance8"></td><td id="MaxDistance8"></td></tr>
+        <tr><td><button class="button" onClick="updateClubLocation(9)">SW</button></td><td id="LastDistance9"></td><td id="AverageDistance9"></td><td id="MaxDistance9"></td></tr>
+    </table>
+<script>
+var startLatitude, startLongitude;
+var currentLatitude, currentLongitude;
+var distanceFromStart;
+
+function startClick() {
+    updateClubLocation(-1);
+}
+
+function updateDistance() {
+    updateClubLocation(0);
+}
+
+/*
+if (localStorage.clickcount) {
+    localStorage.clickcount = Number(localStorage.clickcount) + 1;
+} else {
+    localStorage.clickcount = 1;
+}
+counterElement.innerHTML = "You have clicked the button " + localStorage.clickcount + " time(s).";
+*/
+
+function updateClubLocation(club) {
+    navigator.geolocation.getCurrentPosition(
+        function updateLocationCallback(position) {
+            // club = 0 means refresh distance
+            if (club != 0)
+            {
+                startLatitude = position.coords.latitude;
+                startLongitude = position.coords.longitude;
+            }
+
+            currentLatitude = position.coords.latitude;
+            currentLongitude = position.coords.longitude;
+            distanceFromStart = calcCrow(startLatitude, startLongitude, currentLatitude, currentLongitude);
+            document.getElementById("distance").innerHTML = distanceFromStart + " yards";
+
+            if (club > 0)
+            { 
+                if (!localStorage.TotalDistance) {
+                    localStorage.TotalDistance = [];
+                    localStorage.MaxDistance = [];
+                    localStorage.TotalCount = [];
+                }
+
+                if (!localStorage.TotalDistance[club] || localStorage.TotalDistance[club] < distanceFromStart) {
+                    localStorage.TotalDistance[club] = 0;
+                }
+                if (!localStorage.MaxDistance[club] || localStorage.MaxDistance[club] < distanceFromStart) {
+                    localStorage.MaxDistance[club] = 0;
+                }
+                if (!localStorage.TotalCount[club] || localStorage.TotalCount[club] < distanceFromStart) {
+                    localStorage.TotalCount[club] = 0;
+                }
+
+                if (localStorage.MaxDistance[club] < distanceFromStart) {
+                    localStorage.MaxDistance[club] = distanceFromStart;
+                }
+                localStorage.TotalDistance[club] += distanceFromStart;
+                localStorage.TotalCount[club] += 1;
+
+                var averageDistance = localStorage.TotalDistance[club] / localStorage.TotalCount[club];
+
+                document.getElementById("AverageDistance" + club).innerHTML = averageDistance;
+                document.getElementById("MaxDistance" + club).innerHTML = localStorage.MaxDistance[club];
+                document.getElementById("LastDistance" + club).innerHTML = distanceFromStart;
+            }
+        });
+}
+
+
+//This function takes in latitude and longitude of two location and returns the distance between them as the crow flies (in yards)
+function calcCrow(lat1, lon1, lat2, lon2) 
+{
+  var R = 6975174.98; // yards
+  var dLat = toRad(lat2-lat1);
+  var dLon = toRad(lon2-lon1);
+  var lat1 = toRad(lat1);
+  var lat2 = toRad(lat2);
+
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c;
+  return d;
+}
+
+// Converts numeric degrees to radians
+function toRad(Value) 
+{
+    return Value * Math.PI / 180;
+}
+</script>
+</body>
+</html>
