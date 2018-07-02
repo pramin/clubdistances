@@ -89,7 +89,10 @@ function updateClubLocation(club) {
                 document.getElementById("MaxDistance" + club).innerHTML = localStorage.MaxDistance[club];
                 document.getElementById("LastDistance" + club).innerHTML = distanceFromStart;
             }
-        });
+        },
+        function (msg) {}, 
+        enableHighAccuracy: true
+    );
 }
 
 
