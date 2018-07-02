@@ -18,14 +18,17 @@
         <tr><td><button class="button" onClick="updateClubLocation(7)">9I</button></td><td id="LastDistance7"></td><td id="AverageDistance7"></td><td id="MaxDistance7"></td></tr>
         <tr><td><button class="button" onClick="updateClubLocation(8)">PW</button></td><td id="LastDistance8"></td><td id="AverageDistance8"></td><td id="MaxDistance8"></td></tr>
         <tr><td><button class="button" onClick="updateClubLocation(9)">SW</button></td><td id="LastDistance9"></td><td id="AverageDistance9"></td><td id="MaxDistance9"></td></tr>
+        <tr><td><button class="button" onClick="resetClicked()" colspan="4">Reset</button></td></tr>
     </table>
 <script>
 var startLatitude, startLongitude;
 var currentLatitude, currentLongitude;
 var distanceFromStart;
 
-function startClick() {
-    updateClubLocation(-1);
+function resetClicked() {
+    localStorage.TotalDistance = [];
+    localStorage.MaxDistance = [];
+    localStorage.TotalCount = [];
 }
 
 function updateDistance() {
