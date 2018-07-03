@@ -7,7 +7,7 @@
     </style>
 </head>
 <body>
-    <table>
+    <table width="100%">
         <tr><td><button class="button" onClick="updateClubLocation(-1)">Start</button></td><td><button class="button" onClick="updateClubLocation(0)">Distance</button></td><td id="distance">0 yards</td></tr>
         <tr><td><button class="button" onClick="updateClubLocation(1)">Driver</button></td><td id="LastDistance1"></td><td id="AverageDistance1"></td><td id="MaxDistance1"></td></tr>
         <tr><td><button class="button" onClick="updateClubLocation(2)">3W</button></td><td id="LastDistance2"></td><td id="AverageDistance2"></td><td id="MaxDistance2"></td></tr>
@@ -20,6 +20,8 @@
         <tr><td><button class="button" onClick="updateClubLocation(9)">SW</button></td><td id="LastDistance9"></td><td id="AverageDistance9"></td><td id="MaxDistance9"></td></tr>
         <tr><td><button class="button" onClick="resetClicked()" colspan="4">Reset</button></td></tr>
     </table>
+    <div id="log"></div>
+    </div>
 <script>
 var startLatitude, startLongitude;
 var currentLatitude, currentLongitude;
